@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tanda — the rotating savings club ledger</title>
+<meta name="description" content="Tanda, cundina, susu: a rotating savings and credit association. Track rounds, contributions, payouts and who still owes — with the posteo bidding order.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Serif:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230e1714'/%3E%3Ctext x='16' y='23' font-family='monospace' font-size='17' fill='%23a9852f' text-anchor='middle'%3ET%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <span class="brand-mark">Tanda</span>
+      <span class="brand-sub">roscas · cundinas · susu</span>
+    </div>
+    <nav class="topbar-actions">
+      <button id="btnExport" class="btn" title="Copy a plain-text summary of the club">⧉ Copy summary</button>
+      <button id="btnBackup" class="btn" title="Download this club as a file you can keep or move">⤓ Backup</button>
+      <button id="btnRestore" class="btn" title="Load a club from a backup file">↥ Restore</button>
+      <button id="btnSettings" class="btn btn-brass" title="Club rules, members and payout order">⚙ Settings</button>
+      <button id="btnNew" class="btn btn-ghost" title="Start a different club">+ New</button>
+    </nav>
+  </div>
+</header>
+
+<section class="headband">
+  <div class="head-inner">
+    <div class="head-left">
+      <p class="eyebrow">Rotating savings &amp; credit association</p>
+      <h1 id="clubName">Tanda</h1>
+      <p class="head-meta" id="clubMeta"></p>
+    </div>
+    <div class="head-right">
+      <div class="statusbox">
+        <span class="status-pill" id="statusPill">—</span>
+        <p class="status-line" id="statusLine">—</p>
+        <div class="progress" aria-hidden="true"><i id="progressFill"></i></div>
+        <p class="status-sub" id="statusSub"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<main class="layout">
+  <section class="col-main">
+    <div class="sheet">
+      <div class="sheet-head">
+        <div>
+          <h2>La libreta</h2>
+          <p class="sheet-sub">Tap a box when someone pays their share. The stamp marks who takes the pot.</p>
+        </div>
+        <div class="legend">
+          <span><i class="lg lg-paid"></i> paid</span>
+          <span><i class="lg lg-due"></i> due</span>
+          <span><i class="lg lg-late"></i> late</span>
+          <span><i class="lg lg-stamp"></i> took the pot</span>
+        </div>
+      </div>
+      <div class="matrix-scroll">
+        <table id="matrix" class="matrix"></table>
+      </div>
+    </div>
+
+    <div class="below">
+      <div class="panel">
+        <h3 class="panel-title">Ledger <span class="panel-note">net = received − contributed</span></h3>
+        <div id="ledgerBody"></div>
+      </div>
+
+      <div class="panel">
+        <h3 class="panel-title">Notes <span id="noteBadge" class="badge"></span></h3>
+        <ul id="notesBody" class="notes"></ul>
+      </div>
+    </div>
+  </section>
+
+  <aside class="col-side">
+    <div class="panel">
+      <h3 class="panel-title">This round <span id="roundBadge" class="badge"></span></h3>
+      <div id="roundBody"></div>
+    </div>
+
+    <div class="panel">
+      <h3 class="panel-title">Payout order</h3>
+      <div id="orderBody"></div>
+    </div>
+  </aside>
+</main>
+
+<section class="fieldnotes">
+  <div class="fieldnotes-inner">
+    <h2 class="fn-title">Field notes</h2>
+
+    <div class="fn-grid">
+      <article class="fn-card">
+        <h4>What a tanda is</h4>
+        <p>An informal <b>rotating savings club</b>: a group you trust agrees a fixed share and a rhythm, and each round the whole pot goes to one member — until everyone has held it once. No bank, no interest, no contract. The same practice runs under 200+ names: <i>cundina</i>, <i>susu</i>, <i>junta</i>, <i>sand</i>, <i>polla</i>, <i>sociedad</i>, <i>quiniela</i>… Around <b>31% of Mexicans</b> take part in one.</p>
+      </article>
+      <article class="fn-card">
+        <h4>Why anyone joins</h4>
+        <p>The math is blunt and fair: whoever takes the pot first gets an <b>interest-free loan</b>; whoever takes it last gets <b>enforced savings</b> — every round they hand over money they would have spent. Money in always equals money out; the club creates no return and charges none.</p>
+      </article>
+      <article class="fn-card">
+        <h4>Deciding the order</h4>
+        <p>Groups settle it three ways: <b>raffle</b> the positions, assign by <b>who needs it most</b>, or run a <b>posteo</b> — members bid the discount they're willing to accept. Biggest discount takes the pot first; the last member, who waited, collects their full pot <i>plus</i> every discount left on the table.</p>
+      </article>
+      <article class="fn-card">
+        <h4>The risk</h4>
+        <p>It runs on trust alone. Mexico's CONDUSEF advises against joining: no yield, loses ground to inflation, low liquidity, and the runner risk — the person holding the pot can simply vanish. Keep the records straight: untracked pots can look like tax evasion, and workplace tandas have cost people their jobs.</p>
+      </article>
+      <article class="fn-card">
+        <h4>Glossary</h4>
+        <p><b>Ronda</b> — one round. <b>Aportación</b> — the share each member pays. <b>La caja</b> — the pot. <b>El que lleva la caja</b> — whoever keeps the money (and, too often, the one who disappears). <b>Posteo / postores</b> — bidding for payout position. <b>Número</b> — a member's place in the order.</p>
+      </article>
+      <article class="fn-card">
+        <h4>The other tanda</h4>
+        <p>The word also names the unit of a milonga — four tangos, three valses or three milongas danced back to back, split by cortinas. There's a running-order <a href="milonga-planner/index.html">planner for that one</a> — same word, entirely different risk.</p>
+      </article>
+    </div>
+
+    <div class="fn-sources">
+      <h4>Where this came from</h4>
+      <ul>
+        <li><a href="https://en.wikipedia.org/wiki/Tanda_(informal_loan_club)" target="_blank" rel="noopener">Wikipedia — Tanda (informal loan club)</a> — regional names, structure, 31% participation, CONDUSEF / SCJN warnings.</li>
+        <li><a href="https://www.investopedia.com/terms/r/rotating-credit-and-savings-association.asp" target="_blank" rel="noopener">Investopedia — ROSCA</a> and <a href="https://www.bbva.mx/educacion-financiera/blog/piensa-antes-de-entrar-a-una-tanda.html" target="_blank" rel="noopener">BBVA — Piensa antes de entrar a una tanda</a>.</li>
+        <li><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC10242226/" target="_blank" rel="noopener">Quiñones et al., 2023 — Tandas among Mexican American communities</a>.</li>
+        <li>Nothing here is financial advice, and no money moves through this page — it's a notebook for a club you already run.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <p>Tanda — a ledger for a practice older than any bank in the room. Your club is saved in this browser only; ⤓ Backup keeps a copy in a file.</p>
+</footer>
+
+<!-- Settings -->
+<div id="modal" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal-backdrop" data-close></div>
+  <div class="modal-card">
+    <header class="modal-head">
+      <div>
+        <p class="eyebrow">Club rules</p>
+        <h3 id="modalTitle">Settings</h3>
+      </div>
+      <button class="modal-x" data-close aria-label="Close">✕</button>
+    </header>
+
+    <div class="modal-body">
+      <div class="grid-2">
+        <label class="field">
+          <span>Club name</span>
+          <input type="text" id="fName" maxlength="48" placeholder="Tanda de la Zarza">
+        </label>
+        <label class="field">
+          <span>Currency symbol</span>
+          <input type="text" id="fCurrency" maxlength="6" placeholder="$">
+        </label>
+        <label class="field">
+          <span>Share per member, per round</span>
+          <input type="number" id="fShare" min="1" step="1" placeholder="1200">
+        </label>
+        <label class="field">
+          <span>Rhythm</span>
+          <select id="fFreq">
+            <option value="7">Weekly</option>
+            <option value="14">Every 2 weeks</option>
+            <option value="15">Twice a month</option>
+            <option value="30">Monthly</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>First round due</span>
+          <input type="date" id="fStart">
+        </label>
+        <label class="field">
+          <span>Organizer's cut <small>optional</small></span>
+          <div class="split">
+            <select id="fCommType">
+              <option value="none">none</option>
+              <option value="pct">% of pot</option>
+              <option value="fixed">fixed, per round</option>
+            </select>
+            <input type="number" id="fCommValue" min="0" step="1" value="0">
+          </div>
+        </label>
+      </div>
+
+      <label class="field">
+        <span>Payout order</span>
+        <select id="fOrderMode">
+          <option value="fixed">By agreement — set the order here</option>
+          <option value="posteo">Posteo — members bid a discount for position</option>
+        </select>
+        <small class="field-hint" id="orderHint"></small>
+      </label>
+
+      <div class="field">
+        <span>Members <small>— the numbers, top takes the pot first</small></span>
+        <div id="membersList" class="members-list"></div>
+        <button id="btnAddMember" class="btn btn-small">+ Add member</button>
+      </div>
+    </div>
+
+    <footer class="modal-foot">
+      <button id="btnDeleteClub" class="btn btn-ghost btn-danger">Delete club</button>
+      <span class="spacer"></span>
+      <button id="btnCancel" class="btn btn-ghost" data-close>Cancel</button>
+      <button id="btnSave" class="btn btn-brass">Save</button>
+    </footer>
+  </div>
+</div>
+
+<input type="file" id="restoreFile" accept=".json,application/json" hidden aria-hidden="true">
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<script src="app.js"></script>
+</body>
+</html>

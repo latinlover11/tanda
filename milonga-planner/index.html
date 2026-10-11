@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tanda — build a milonga, one set at a time</title>
+<meta name="description" content="A tanda is the unit of a milonga: four tangos, three valses or three milongas played back to back, separated by cortinas. Plan a whole night of them.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,800;1,600&family=Barlow+Condensed:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%236e1b23'/%3E%3Ctext x='16' y='23' font-family='Georgia' font-size='20' fill='%23c8a45c' text-anchor='middle'%3ET%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <span class="brand-mark">Tanda</span>
+      <span class="brand-sub">milonga running order</span>
+    </div>
+    <nav class="topbar-actions">
+      <button id="btnCompose" class="btn btn-gold" title="Build the whole night from the rules">✦ Compose the night</button>
+      <button id="btnExport" class="btn" title="Copy a plain-text running order">⤓ Copy running order</button>
+      <button id="btnBackup" class="btn" title="Download this running order as a file">⤓ Backup</button>
+      <button id="btnRestore" class="btn" title="Load a running order from a backup file">↥ Restore</button>
+      <button id="btnPrint" class="btn" title="Print a clean set list">▤ Print set list</button>
+      <button id="btnReset" class="btn btn-ghost" title="Start over">Reset</button>
+    </nav>
+  </div>
+</header>
+
+<section class="print-heading" aria-label="Printed running order">
+  <h1>Tanda · Milonga running order</h1>
+  <p id="printDate"></p>
+</section>
+
+<section class="masthead">
+  <div class="masthead-inner">
+    <p class="eyebrow">Buenos Aires · the unit of a milonga</p>
+    <h1 class="lede">A <em>tanda</em> is a set: <span class="hl">four tangos</span>, <span class="hl">three valses</span> or <span class="hl">three milongas</span> played back to back — one partner, one conversation, about twelve minutes.</h1>
+    <div class="facts">
+      <div class="fact">
+        <span class="fact-n">≈12<small>min</small></span>
+        <p>One tanda, one partner. You leave when the cortina sounds.</p>
+      </div>
+      <div class="fact">
+        <span class="fact-n">30–60<small>sec</small></span>
+        <p>La <b>cortina</b> — a curtain of non-tango music between every tanda. The floor opens, partners change.</p>
+      </div>
+      <div class="fact">
+        <span class="fact-n">1<small>rule</small></span>
+        <p>Homogeneous: same orchestra, same years, often the same singer — so rhythm, tempo and intensity never wobble.</p>
+      </div>
+      <div class="fact">
+        <span class="fact-n">TTMTTV</span>
+        <p>A classic night shape: tango · tango · milonga · tango · tango · vals — repeated and varied.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<main class="layout">
+  <section class="col-main">
+    <div class="toolbar">
+      <span class="toolbar-label">Add a tanda</span>
+      <button class="btn btn-style" data-add="tango">+ Tango <small>4 songs</small></button>
+      <button class="btn btn-style" data-add="vals">+ Vals <small>3 songs</small></button>
+      <button class="btn btn-style" data-add="milonga">+ Milonga <small>3 songs</small></button>
+      <span class="toolbar-spacer"></span>
+      <button id="btnClear" class="btn btn-ghost">Clear night</button>
+    </div>
+    <div id="timeline" class="timeline" aria-live="polite"></div>
+    <div id="emptyState" class="empty-state" hidden>
+      <p class="empty-glyph">♪</p>
+      <h3>The floor is empty.</h3>
+      <p>Start with a tanda of tangos, or let the composer build a full night from the classic rules.</p>
+      <button class="btn btn-gold" data-compose>✦ Compose the night</button>
+    </div>
+  </section>
+
+  <aside class="col-side">
+    <div class="panel panel-chart">
+      <h3 class="panel-title">Energy arc</h3>
+      <p class="panel-hint">Warm up, breathe, peak, then the <i>cierre</i>.</p>
+      <div id="chart" class="chart"></div>
+      <div id="chartLegend" class="chart-legend"></div>
+    </div>
+
+    <div class="panel">
+      <h3 class="panel-title">DJ notes <span id="noteCount" class="badge"></span></h3>
+      <ul id="notes" class="notes"></ul>
+    </div>
+
+    <div class="panel">
+      <h3 class="panel-title">The night</h3>
+      <div id="stats" class="stats"></div>
+    </div>
+  </aside>
+</main>
+
+<section class="fieldnotes">
+  <div class="fieldnotes-inner">
+    <h2 class="fn-title">Field notes</h2>
+
+    <div class="fn-grid">
+      <article class="fn-card">
+        <h4>Tanda</h4>
+        <p>The set itself — the atom of a milonga. Standard lengths: <b>4 tangos</b>, <b>3–4 valses</b>, <b>3 milongas</b>, roughly 10–12 minutes. Built from one orchestra, one period, one singer, so dancers can anticipate what comes next.</p>
+      </article>
+      <article class="fn-card">
+        <h4>Cortina</h4>
+        <p>The “curtain”: 30–60 seconds of deliberately non-tango music after every tanda. It means <i>the tanda is over</i> — thank your partner, step off the <b>ronda</b>, and take the chance to <b>cabeceo</b>: catch someone’s eye across the room for the next set.</p>
+      </article>
+      <article class="fn-card">
+        <h4>Cierre</h4>
+        <p>The close. The last tanda is announced during the preceding cortina and traditionally lands hard — a strong tango everyone knows — so the night ends at its peak instead of fading out.</p>
+      </article>
+      <article class="fn-card">
+        <h4>Cabeceo &amp; mirada</h4>
+        <p>Invitation by glance: a nod from across the room, accepted by a look held. No crossing the floor to ask, no public refusal. The dance starts before the music does.</p>
+      </article>
+      <article class="fn-card">
+        <h4>Ronda</h4>
+        <p>The line of dance — everyone travels counter-clockwise around the floor. The tanda keeps a couple together; the cortina returns you both to the ronda’s current.</p>
+      </article>
+      <article class="fn-card">
+        <h4>Hammock tanda</h4>
+        <p>A shape for four tangos: a familiar opener pulls dancers on, the middle sags softer, the last swings up again. Strong · soft · soft · strong — an arc, not a flat line.</p>
+      </article>
+    </div>
+
+    <div class="fn-sources">
+      <h4>Where this came from</h4>
+      <ul>
+        <li><a href="https://tangovoice.wordpress.com/2016/12/06/tango-dj-fundamentals-part-1-selecting-music-for-dancing-and-tanda-construction/" target="_blank" rel="noopener">Tango Voice — Tango DJ Fundamentals: tanda construction</a> — orchestras, eras, recording dates and which recordings Buenos Aires actually dances to.</li>
+        <li><a href="https://www.tangology101.com/main.cfm/id/485" target="_blank" rel="noopener">Tangology 101 — vals &amp; milonga tandas</a> — track-by-track vals and milonga tandas with years.</li>
+        <li><a href="https://www.madisontango.org/blog/what-shaped-the-tanda" target="_blank" rel="noopener">Madison Tango Society — What shaped the tanda?</a> and <a href="https://www.el-recodo.com/tandascortinas-en?lang=en" target="_blank" rel="noopener">El Recodo — Tandas &amp; cortinas</a>.</li>
+        <li>Recording years follow those sources; <b>durations are approximations</b> of typical transfers, for planning only. “Energy” ratings (1–5) are editorial, not measured.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">    <p>Tanda — a planner for people who take the cortina seriously. Data lives in <code>data.js</code>; your night is saved in this browser, and Backup keeps a copy in a file. The same word names a rotating savings club round in the root app — see <a href="../README.md">README.md</a>.</p>
+</footer>
+
+<!-- Song picker -->
+<div id="modal" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal-backdrop" data-close></div>
+  <div class="modal-card">
+    <header class="modal-head">
+      <div>
+        <p class="eyebrow" id="modalKicker">Pick a recording</p>
+        <h3 id="modalTitle">Tanda 01 · tango</h3>
+      </div>
+      <button class="modal-x" data-close aria-label="Close">✕</button>
+    </header>
+    <div class="modal-tools">
+      <input type="search" id="pickerSearch" class="picker-search" placeholder="Search title, orchestra, singer…" autocomplete="off">
+      <select id="pickerSort" class="picker-sort" aria-label="Sort">
+        <option value="energy">Sort: energy</option>
+        <option value="year">Sort: year</option>
+        <option value="orchestra">Sort: orchestra</option>
+        <option value="title">Sort: title</option>
+      </select>
+    </div>
+    <div id="pickerList" class="picker-list"></div>
+    <p class="modal-foot">Recordings already used elsewhere in the night are dimmed — click to reuse anyway.</p>
+  </div>
+</div>
+
+<input type="file" id="restoreFile" accept=".json,application/json" hidden aria-hidden="true">
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
