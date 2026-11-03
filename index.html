@@ -8,8 +8,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Serif:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
+<meta name="theme-color" content="#0e1714">
+<link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230e1714'/%3E%3Ctext x='16' y='23' font-family='monospace' font-size='17' fill='%23a9852f' text-anchor='middle'%3ET%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="styles.css?v=8">
 </head>
 <body>
 
@@ -23,7 +25,9 @@
       <button id="btnLang" class="btn btn-ghost" title="Cambiar a español">ES</button>
       <button id="btnExport" class="btn" data-i18n="nav.export" data-i18n-title="nav.export.t" title="Copy a plain-text summary of the club">⧉ Copy summary</button>
       <button id="btnBackup" class="btn" data-i18n="nav.backup" data-i18n-title="nav.backup.t" title="Download this club as a file you can keep or move">⤓ Backup</button>
+      <button id="btnInvite" class="btn" data-i18n="nav.invite" data-i18n-title="nav.invite.t" title="Make this club shared and copy an invite link for the group">🔗 Invite</button>
       <button id="btnRestore" class="btn" data-i18n="nav.restore" data-i18n-title="nav.restore.t" title="Load a club from a backup file">↥ Restore</button>
+      <button id="btnPrint" class="btn btn-ghost" data-i18n="nav.print" data-i18n-title="nav.print.t" title="Print the libreta">⎙ Print</button>
       <button id="btnSettings" class="btn btn-brass" data-i18n="nav.settings" data-i18n-title="nav.settings.t" title="Club rules, members and payout order">⚙ Settings</button>
       <button id="btnNew" class="btn btn-ghost" data-i18n="nav.new" data-i18n-title="nav.new.t" title="Start a different club">+ New</button>
     </nav>
@@ -34,6 +38,10 @@
   <div class="head-inner">
     <div class="head-left">
       <p class="eyebrow" data-i18n="head.eyebrow">Rotating savings &amp; credit association</p>
+      <label class="club-pick-wrap" id="clubPickWrap" hidden>
+        <span class="club-pick-label" data-i18n="pick.label">Club</span>
+        <select id="clubPick" class="club-pick" title="Switch between your clubs"></select>
+      </label>
       <h1 id="clubName">Tanda</h1>
       <p class="head-meta" id="clubMeta"></p>
     </div>
@@ -216,8 +224,30 @@
 
 <input type="file" id="restoreFile" accept=".json,application/json" hidden aria-hidden="true">
 
+<!-- Join (opened by an invite link) -->
+<div id="joinModal" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="joinTitle">
+  <div class="modal-card">
+    <header class="modal-head">
+      <div>
+        <p class="eyebrow" data-i18n="join.eyebrow">You are invited</p>
+        <h3 id="joinTitle" data-i18n="join.title">Join this tanda</h3>
+      </div>
+    </header>
+    <div class="modal-body">
+      <p id="joinMeta" class="round-meta"></p>
+      <label class="field">
+        <span data-i18n="join.name">Your name</span>
+        <input type="text" id="joinName" maxlength="24" placeholder="María">
+      </label>
+    </div>
+    <footer class="modal-foot">
+      <button id="btnJoin" class="btn btn-brass" data-i18n="join.go">Join the club</button>
+    </footer>
+  </div>
+</div>
+
 <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
-<script src="app.js?v=2"></script>
+<script src="app.js?v=8"></script>
 </body>
 </html>

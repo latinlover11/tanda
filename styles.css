@@ -98,6 +98,22 @@ code{ font-family:var(--mono); font-size:.9em; background:rgba(255,255,255,.07);
   font-family:var(--mono); text-transform:uppercase; letter-spacing:.26em;
   font-size:11px; color:var(--brass); margin:0 0 12px;
 }
+.club-pick-wrap{
+  display:inline-flex; align-items:center; gap:9px; margin:0 0 10px;
+}
+.club-pick-label{
+  font-family:var(--mono); text-transform:uppercase; letter-spacing:.2em;
+  font-size:10px; color:rgba(246,239,225,.4);
+}
+.club-pick{
+  font-family:var(--mono); font-size:12.5px; letter-spacing:.02em;
+  color:var(--paper); background:rgba(0,0,0,.3);
+  border:1px solid rgba(201,169,92,.32); border-radius:var(--rad);
+  padding:6px 10px; cursor:pointer; transition:.15s;
+  max-width:340px; text-overflow:ellipsis;
+}
+.club-pick:hover{ border-color:var(--brass-soft); }
+.club-pick:focus{ outline:none; border-color:var(--brass); }
 .head-left h1{
   font-family:var(--serif); font-weight:700; font-size:clamp(30px,4.4vw,50px);
   line-height:1.08; margin:0; color:var(--paper);
@@ -322,6 +338,12 @@ button.th-stamp:hover{ background:rgba(184,52,42,.2); border-color:var(--red); c
 .mode-btn.on{ background:var(--indigo); border-color:var(--indigo); color:#fff; }
 .mode-hint{ margin:9px 0 0; font-size:12.5px; color:var(--ink-soft); line-height:1.5; }
 
+/* collection reminder */
+.remind-row{ display:flex; gap:8px; margin-top:10px; flex-wrap:wrap; }
+.remind-row a.btn{ display:inline-block; text-decoration:none; }
+.remind-row .btn-ghost{ color:var(--ink-soft); border-color:var(--rule-2); }
+.remind-row .btn-ghost:hover{ color:var(--ink); background:rgba(0,0,0,.05); border-color:var(--ink-soft); }
+
 /* ledger panel */
 .ledger-row{
   display:flex; align-items:baseline; justify-content:space-between; gap:10px;
@@ -457,6 +479,12 @@ button.th-stamp:hover{ background:rgba(184,52,42,.2); border-color:var(--red); c
   transition:.24s ease; z-index:90; box-shadow:var(--shadow); max-width:min(90vw,520px); text-align:center;
 }
 .toast.show{ opacity:1; transform:translate(-50%, 0); }
+.toast button{
+  background:none; border:none; color:inherit; font:inherit; cursor:pointer;
+  text-decoration:underline; text-underline-offset:3px;
+  padding:0 0 0 12px; opacity:.72; transition:.15s;
+}
+.toast button:hover, .toast button:focus-visible{ opacity:1; }
 
 /* ---------- Responsive ---------- */
 @media (max-width:1080px){
@@ -486,4 +514,31 @@ button.th-stamp:hover{ background:rgba(184,52,42,.2); border-color:var(--red); c
 }
 @media (prefers-reduced-motion: reduce){
   *{ animation-duration:.01ms !important; transition-duration:.01ms !important; }
+}
+
+/* ---------- Print — the libreta on paper ---------- */
+@media print{
+  @page{ margin:14mm; }
+  *{ -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  body{ background:#fff; }
+  /* desk chrome never prints */
+  .topbar, .fieldnotes, .toast, #modal, .remind-row, .club-pick-wrap,
+  .payer-btn, .payout-btn, .mode-btn, .th-stamp, .progress, .m-tools{ display:none !important; }
+  /* the paper, not the desk */
+  .headband{ border-color:#c9c3b2; }
+  .head-inner{ padding:0 0 14px; max-width:none; }
+  .eyebrow, .head-meta, .status-sub, .panel-note{ color:#555; }
+  .head-left h1, .status-line, .panel-title, .sheet h2{ color:#111; }
+  .statusbox{ background:none; border:1px solid #c9c3b2; min-width:0; }
+  .status-pill{ border-color:#888; }
+  .layout{ display:block; padding:0; max-width:none; }
+  .col-side{ position:static; }
+  .sheet, .panel{
+    background:none; border:1px solid #c9c3b2; box-shadow:none;
+    margin:0 0 14px; break-inside:avoid; page-break-inside:avoid;
+  }
+  .matrix-scroll{ overflow:visible; }
+  .matrix th, .matrix td{ border-color:#b9b3a2 !important; }
+  .cell .cell-box{ border-color:#8a8474 !important; }
+  .payer-name, .payer-flag, .payer-amt{ color:#222; }
 }

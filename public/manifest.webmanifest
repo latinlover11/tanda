@@ -1,0 +1,14 @@
+{
+  "name": "Tanda — el libro de la tanda",
+  "short_name": "Tanda",
+  "description": "Rotating savings club ledger — rondas, aportaciones y cajas. Works offline.",
+  "lang": "es",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0e1714",
+  "theme_color": "#0e1714",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}
