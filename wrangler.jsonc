@@ -1,0 +1,11 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "tanda-ledger",
+  "main": "worker.js",
+  "compatibility_date": "2026-10-12",
+  "observability": { "enabled": true, "head_sampling_rate": 1 },
+  "assets": { "directory": "./public", "binding": "ASSETS" },
+  "d1_databases": [
+    { "binding": "DB", "database_name": "tanda-ledger" }
+  ]
+}
